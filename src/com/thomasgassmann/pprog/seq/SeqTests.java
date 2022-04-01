@@ -9,7 +9,7 @@ public class SeqTests {
     @Test
     public void check() {
         Random r = new Random(42);
-        int[] a = new int[400];
+        int[] a = new int[4000];
         for (int i = 0; i < a.length; i++) {
             a[i] = r.nextInt(0, 10);
         }

@@ -25,8 +25,10 @@ public class LongestCommonSequenceMulti extends RecursiveTask<Sequence> {
     @Override
     protected Sequence compute() {
         if (_to - _from <= 1) {
-            int l = _to == _from ? 0 : 1;
-            return _input[_to] == _input[_from] ? build(_from, _to, l, l) : build(_from, _from, 0, 0);
+            boolean eq = _input[_to] == _input[_from];
+            return _to == _from
+                    ? build(_from, _to, 0, 0)
+                    : build(_from, eq ? _to : _from, eq ? 1 : 0, eq ? 1 : 0);
         }
 
         int size = (_to - _from) / 2;
@@ -41,25 +43,27 @@ public class LongestCommonSequenceMulti extends RecursiveTask<Sequence> {
         Sequence leftSeq = left.join();
         Sequence rightSeq = right.join();
 
-        Sequence combined = new Sequence(_from, _from);
+        int lOffset = leftSeq.leftOffset;
+        int rOffset = rightSeq.rightOffset;
+
+        Sequence combined = null;
         if (leftSeq.endIndex + 1 == rightSeq.startIndex && _input[leftSeq.endIndex] == _input[rightSeq.startIndex]) {
-            combined = build(leftSeq.startIndex, rightSeq.endIndex, 0, 0);
+            combined = new Sequence(leftSeq.startIndex, rightSeq.endIndex);
         } else if (_input[li] == _input[ri]) {
-            combined = build(li - leftSeq.rightOffset, ri + rightSeq.leftOffset, 0, 0);
+            combined = new Sequence(li - leftSeq.rightOffset, ri + rightSeq.leftOffset);
+        }
+
+        if (combined != null) {
+            if (combined.endIndex == _to) {
+                rOffset = combined.lenght() - 1;
+            }
+
+            if (combined.startIndex == _from) {
+                lOffset = combined.lenght() - 1;
+            }
         }
 
         Sequence max = max(leftSeq, combined, rightSeq);
-
-        int lOffset = leftSeq.leftOffset = -1;
-        int rOffset = rightSeq.rightOffset = -1;
-        for (int i = _from; i < _input.length && _input[i] == _input[_from]; i++) {
-            lOffset++;
-        }
-
-        for (int i = _to; i >= 0 && _input[_to] == _input[i]; i--) {
-            rOffset++;
-        }
-
         return build(max.startIndex, max.endIndex, lOffset, rOffset);
     }
 
@@ -68,6 +72,14 @@ public class LongestCommonSequenceMulti extends RecursiveTask<Sequence> {
     }
 
     private Sequence max(Sequence a, Sequence b) {
+        if (a == null) {
+            return b;
+        }
+
+        if (b == null) {
+            return a;
+        }
+
         return b.lenght() > a.lenght() ? b : a;
     }
 
