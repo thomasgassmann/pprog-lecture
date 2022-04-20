@@ -8,6 +8,7 @@ public class TASLock implements Lock {
 
     @Override
     public void acquire(int thread) {
+        while (_state.get());
         while (_state.getAndSet(true));
     }
 
