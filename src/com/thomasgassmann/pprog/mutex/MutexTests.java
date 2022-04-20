@@ -37,6 +37,13 @@ public class MutexTests {
         run(COUNT, lock);
     }
 
+    @Test
+    public void checkBackoffTASLock() {
+        final int COUNT = 10;
+        BackoffTASLock lock = new BackoffTASLock();
+        run(COUNT, lock);
+    }
+
     private static void run(int n, Lock lock) {
         new CounterTest(n) {
             @Override
