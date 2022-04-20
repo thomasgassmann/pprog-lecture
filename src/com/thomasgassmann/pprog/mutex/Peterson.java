@@ -15,7 +15,7 @@ public class Peterson {
         assert thread == 0 || thread == 1;
         _flags.set(thread, 1);
         _victim = thread;
-        while (_flags.get(thread == 0 ? 1 : 0) == 1 && _victim == thread);
+        while (_flags.get(1 - thread) == 1 && _victim == thread);
     }
 
     public void release(int thread) {
