@@ -12,7 +12,7 @@ public class Dekker {
 
     public void acquire(ThreadChoice choice) {
         setWant(choice, true);
-        while (read(other(choice))) {
+        while (readWant(other(choice))) {
             if (_turn == other(choice)) {
                 setWant(choice, false);
                 while (_turn != choice);
@@ -26,7 +26,7 @@ public class Dekker {
         setWant(choice, false);
     }
 
-    private boolean read(ThreadChoice choice) {
+    private boolean readWant(ThreadChoice choice) {
         if (choice == ThreadChoice.P) {
             return _wantP;
         } else if (choice == ThreadChoice.Q) {
@@ -47,9 +47,14 @@ public class Dekker {
     }
 
     private void setWant(ThreadChoice choice, boolean want) {
-        switch (choice) {
-            case P -> _wantP = want;
-            case Q -> _wantQ = want;
+        if (choice == ThreadChoice.P) {
+            _wantP = want;
+            return;
+        } else if (choice == ThreadChoice.Q) {
+            _wantQ = want;
+            return;
         }
+
+        throw new IllegalArgumentException();
     }
 }
