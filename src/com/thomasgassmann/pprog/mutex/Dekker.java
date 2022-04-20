@@ -1,6 +1,6 @@
 package com.thomasgassmann.pprog.mutex;
 
-public class Dekker {
+public class Dekker implements Lock {
     public enum ThreadChoice {
         P,
         Q
@@ -9,6 +9,16 @@ public class Dekker {
     private volatile boolean _wantP;
     private volatile boolean _wantQ;
     private volatile ThreadChoice _turn = ThreadChoice.P;
+
+    @Override
+    public void acquire(int thread) {
+        acquire(thread == 0 ? ThreadChoice.P : ThreadChoice.Q);
+    }
+
+    @Override
+    public void release(int thread) {
+        release(thread == 0 ? ThreadChoice.P : ThreadChoice.Q);
+    }
 
     public void acquire(ThreadChoice choice) {
         setWant(choice, true);

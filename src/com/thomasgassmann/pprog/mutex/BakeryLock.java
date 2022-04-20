@@ -2,7 +2,7 @@ package com.thomasgassmann.pprog.mutex;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
-public class BakeryLock {
+public class BakeryLock implements Lock {
     private AtomicIntegerArray _flag;
     private AtomicIntegerArray _label;
     private final int _n;
@@ -13,12 +13,14 @@ public class BakeryLock {
         _label = new AtomicIntegerArray(n);
     }
 
+    @Override
     public void acquire(int me) {
         _flag.set(me, 1);
         _label.set(me, maxLabel() + 1);
         while (conflict(me));
     }
 
+    @Override
     public void release(int me) {
         _flag.set(me, 0);
     }

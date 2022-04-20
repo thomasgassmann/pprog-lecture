@@ -2,7 +2,7 @@ package com.thomasgassmann.pprog.mutex;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
-public class FilterLock {
+public class FilterLock implements Lock {
     private AtomicIntegerArray _level;
     private AtomicIntegerArray _victim;
 
@@ -14,6 +14,7 @@ public class FilterLock {
         _victim = new AtomicIntegerArray(threads);
     }
 
+    @Override
     public void acquire(int thread) {
         for (int i = 1; i < _threadCount; i++) {
             _level.set(thread, i);
@@ -22,6 +23,7 @@ public class FilterLock {
         }
     }
 
+    @Override
     public void release(int thread) {
         _level.set(thread, 0);
     }

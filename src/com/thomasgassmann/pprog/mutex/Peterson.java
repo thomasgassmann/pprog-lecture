@@ -2,7 +2,7 @@ package com.thomasgassmann.pprog.mutex;
 
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
-public class Peterson {
+public class Peterson implements Lock {
     private AtomicIntegerArray _flags;
     private volatile int _victim;
 
@@ -11,6 +11,7 @@ public class Peterson {
         _victim = 0;
     }
 
+    @Override
     public void acquire(int thread) {
         assert thread == 0 || thread == 1;
         _flags.set(thread, 1);
@@ -18,6 +19,7 @@ public class Peterson {
         while (_flags.get(1 - thread) == 1 && _victim == thread);
     }
 
+    @Override
     public void release(int thread) {
         assert thread == 0 || thread == 1;
         _flags.set(thread, 0);

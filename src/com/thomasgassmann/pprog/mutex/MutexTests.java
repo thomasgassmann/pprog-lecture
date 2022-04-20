@@ -7,57 +7,38 @@ public class MutexTests {
     @Test
     public void checkDekker() {
         Dekker lock = new Dekker();
-        new CounterTest(2) {
-            @Override
-            public void acquire(int thread) {
-                lock.acquire(thread == 0 ? Dekker.ThreadChoice.P : Dekker.ThreadChoice.Q);
-            }
-
-            @Override
-            public void release(int thread) {
-                lock.release(thread == 0 ? Dekker.ThreadChoice.P : Dekker.ThreadChoice.Q);
-            }
-        }.run();
+        run(2, lock);
     }
 
     @Test
     public void checkPeterson() {
         Peterson lock = new Peterson();
-        new CounterTest(2) {
-            @Override
-            public void acquire(int thread) {
-                lock.acquire(thread);
-            }
-
-            @Override
-            public void release(int thread) {
-                lock.release(thread);
-            }
-        }.run();
+        run(2, lock);
     }
 
     @Test
     public void checkFilterLock() {
         final int COUNT = 10;
         FilterLock lock = new FilterLock(COUNT);
-        new CounterTest(COUNT) {
-            @Override
-            public void acquire(int thread) {
-                lock.acquire(thread);
-            }
-
-            @Override
-            public void release(int thread) {
-                lock.release(thread);
-            }
-        }.run();
+        run(COUNT, lock);
     }
 
     @Test
     public void checkBakeryLock() {
         final int COUNT = 10;
         BakeryLock lock = new BakeryLock(COUNT);
-        new CounterTest(COUNT) {
+        run(COUNT, lock);
+    }
+
+    @Test
+    public void checkTASLock() {
+        final int COUNT = 10;
+        TASLock lock = new TASLock();
+        run(COUNT, lock);
+    }
+
+    private static void run(int n, Lock lock) {
+        new CounterTest(n) {
             @Override
             public void acquire(int thread) {
                 lock.acquire(thread);
