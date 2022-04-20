@@ -22,7 +22,18 @@ public class MutexTests {
 
     @Test
     public void checkPeterson() {
+        Peterson lock = new Peterson();
+        new CounterTest(2) {
+            @Override
+            public void acquire(int thread) {
+                lock.acquire(thread);
+            }
 
+            @Override
+            public void release(int thread) {
+                lock.release(thread);
+            }
+        }.run();
     }
 
     private static abstract class CounterTest {
