@@ -53,6 +53,23 @@ public class MutexTests {
         }.run();
     }
 
+    @Test
+    public void checkBakeryLock() {
+        final int COUNT = 10;
+        BakeryLock lock = new BakeryLock(COUNT);
+        new CounterTest(COUNT) {
+            @Override
+            public void acquire(int thread) {
+                lock.acquire(thread);
+            }
+
+            @Override
+            public void release(int thread) {
+                lock.release(thread);
+            }
+        }.run();
+    }
+
     private static abstract class CounterTest {
         private int _threads;
         private volatile int _value = 0;
