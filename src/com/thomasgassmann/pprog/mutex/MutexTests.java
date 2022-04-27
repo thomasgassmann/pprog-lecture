@@ -25,7 +25,7 @@ public class MutexTests {
 
     @Test
     public void checkBakeryLock() {
-        final int COUNT = 10;
+        final int COUNT = 5;
         BakeryLock lock = new BakeryLock(COUNT);
         run(COUNT, lock);
     }
