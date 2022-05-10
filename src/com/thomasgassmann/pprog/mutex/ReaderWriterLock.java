@@ -7,9 +7,10 @@ package com.thomasgassmann.pprog.mutex;
 public class ReaderWriterLock {
     int writers = 0;
     int readers = 0;
+    int writersWaiting = 0;
 
     synchronized void acquire_read() {
-        while (writers > 0)
+        while (writers > 0 || writersWaiting > 0)
             try { wait(); }
             catch (InterruptedException e) {}
         readers++;
@@ -21,9 +22,11 @@ public class ReaderWriterLock {
     }
 
     synchronized void acquire_write() {
+        writersWaiting++;
         while (writers > 0 || readers > 0)
             try { wait(); }
             catch (InterruptedException e) {}
+        writersWaiting--;
         writers++;
     }
 
