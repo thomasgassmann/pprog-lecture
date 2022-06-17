@@ -50,7 +50,7 @@ public class LazySkipList<T> {
                 for (int level = 0; valid && (level <= topLevel); level++) {
                     pred = preds[level];
                     succ = succs[level];
-                    pred.lock.lock();
+                    pred.lock();
                     highestLocked = level;
                     valid = !pred.marked && !succ.marked && pred.next[level]==succ;
                 }
@@ -94,7 +94,7 @@ public class LazySkipList<T> {
     }
 
     private static final class Node<T> {
-        final Lock lock = new ReentrantLock();
+        private final Lock lock = new ReentrantLock();
         final T item;
         final int key;
         final Node<T>[] next;
