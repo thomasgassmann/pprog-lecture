@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="xdev">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/mpi/lib/xdev.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

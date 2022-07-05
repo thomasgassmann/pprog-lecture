@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="mpiExp">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/mpi/lib/mpiExp.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

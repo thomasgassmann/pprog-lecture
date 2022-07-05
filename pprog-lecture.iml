@@ -39,5 +39,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="mpi" level="project" />
+    <orderEntry type="library" name="mpiExp" level="project" />
+    <orderEntry type="library" name="xdev" level="project" />
   </component>
 </module>
