@@ -80,7 +80,7 @@ public class LazySkipList<T> {
         int lFound = -1;
         Node<T> pred = head;
         for (int level = MAX_LEVEL; level >= 0; level--) {
-            volatile Node<T> curr = pred.next[level];
+            Node<T> curr = pred.next[level];
             while (key > curr.key) {
                 pred = curr; curr = pred.next[level];
             }
